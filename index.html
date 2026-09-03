@@ -1,134 +1,309 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>تحميل أداة فريد</title>
+    <title>تحميل أداة فريد</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-      margin: 0;
-      font-family: Tahoma, Arial, sans-serif;
-      background: linear-gradient(135deg, #eef7ff, #f7fbff);
-      color: #1f2937;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+        body {
+            margin: 0;
+            font-family: Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #eef7ff, #f7fbff);
+            color: #1f2937;
 
-    .container {
-      width: 100%;
-      max-width: 650px;
-      background: white;
-      border-radius: 24px;
-      padding: 35px 25px;
-      text-align: center;
-      box-shadow: 0 10px 35px rgba(0,0,0,.12);
-    }
+            min-height: 100vh;
 
-    .logo {
-      font-size: 52px;
-      font-weight: 900;
-      color: #087f8c;
-      margin-bottom: 5px;
-    }
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    h1 {
-      margin: 5px 0 10px;
-      font-size: 28px;
-    }
+            padding: 20px;
+        }
 
-    .description {
-      color: #64748b;
-      font-size: 17px;
-      line-height: 1.8;
-      margin-bottom: 30px;
-    }
+        .container {
 
-    .download {
-      display: block;
-      text-decoration: none;
-      padding: 18px;
-      margin: 15px 0;
-      border-radius: 15px;
-      font-size: 20px;
-      font-weight: bold;
-      transition: .2s;
-    }
+            width: 100%;
+            max-width: 680px;
 
-    .pc {
-      background: #087f8c;
-      color: white;
-    }
+            background: white;
 
-    .mobile {
-      background: #2563eb;
-      color: white;
-    }
+            border-radius: 26px;
 
-    .download:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,.15);
-    }
+            padding: 35px 25px;
 
-    .note {
-      background: #f8fafc;
-      border-radius: 12px;
-      padding: 15px;
-      margin-top: 25px;
-      font-size: 14px;
-      line-height: 1.8;
-      color: #475569;
-    }
+            text-align: center;
 
-    .footer {
-      margin-top: 25px;
-      font-size: 13px;
-      color: #94a3b8;
-    }
-  </style>
+            box-shadow: 0 12px 40px rgba(0,0,0,.13);
+        }
+
+        .logo {
+
+            font-size: 58px;
+            font-weight: 900;
+
+            color: #078b97;
+
+            margin-bottom: 4px;
+        }
+
+        h1 {
+
+            margin: 5px 0 8px;
+
+            font-size: 29px;
+        }
+
+        .description {
+
+            color: #64748b;
+
+            font-size: 17px;
+
+            line-height: 1.9;
+
+            margin-bottom: 20px;
+        }
+
+        .version {
+
+            display: inline-block;
+
+            background: #ecfdf5;
+
+            color: #047857;
+
+            padding: 7px 16px;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            margin-bottom: 22px;
+        }
+
+        .download {
+
+            display: block;
+
+            text-decoration: none;
+
+            padding: 18px;
+
+            margin: 14px 0;
+
+            border-radius: 15px;
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            transition: .2s;
+        }
+
+        .edge {
+
+            background: #087f8c;
+
+            color: white;
+        }
+
+        .chrome {
+
+            background: #334155;
+
+            color: white;
+        }
+
+        .kiwi {
+
+            background: #2563eb;
+
+            color: white;
+        }
+
+        .download:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow: 0 8px 20px rgba(0,0,0,.18);
+        }
+
+        .recommended {
+
+            font-size: 13px;
+
+            color: #047857;
+
+            margin-top: -5px;
+
+            margin-bottom: 8px;
+
+            font-weight: bold;
+        }
+
+        .note {
+
+            background: #f8fafc;
+
+            border-radius: 14px;
+
+            padding: 16px;
+
+            margin-top: 25px;
+
+            font-size: 14px;
+
+            line-height: 1.9;
+
+            color: #475569;
+        }
+
+        .footer {
+
+            margin-top: 25px;
+
+            font-size: 13px;
+
+            color: #94a3b8;
+        }
+
+        @media(max-width:600px){
+
+            .container {
+                padding: 28px 17px;
+            }
+
+            .logo {
+                font-size: 50px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .download {
+                font-size: 17px;
+            }
+        }
+    </style>
+
 </head>
+
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="logo">فريد</div>
+    <div class="logo">
+        فريد
+    </div>
 
-    <h1>تحميل أداة فريد</h1>
+    <h1>
+        تحميل وتثبيت أداة فريد
+    </h1>
 
     <div class="description">
-      اختر النسخة المناسبة لجهازك.<br>
-      روابط التحميل تقوم دائمًا بتنزيل أحدث إصدار متاح.
+
+        اختر النسخة المناسبة لجهازك ومتصفحك.
+        <br>
+
+        روابط التحميل تحصل دائمًا على أحدث إصدار متاح.
+
     </div>
 
-    <a class="download pc"
-       href="https://github.com/m0hfared013-dev/Freid/releases/latest/download/Freid_PC.zip">
-       💻 تحميل فريد للكمبيوتر
+
+    <div class="version">
+
+        أحدث إصدار متاح
+
+    </div>
+
+
+    <!-- EDGE -->
+
+    <a
+        class="download edge"
+
+        href="https://microsoftedge.microsoft.com/addons/detail/freid-student-and-teach/ingpmmcbljijildjebmbokilegnejenl?hl=en-US"
+
+        target="_blank"
+    >
+
+        🌐 تثبيت فريد على Microsoft Edge
+
     </a>
 
-    <a class="download mobile"
-       href="https://github.com/m0hfared013-dev/Freid/releases/latest/download/Freid_KIWI.zip">
-       📱 تحميل فريد لـ Kiwi Android
+    <div class="recommended">
+
+        ✓ الأسهل لمستخدمي الكمبيوتر — من متجر Microsoft الرسمي
+
+    </div>
+
+
+    <!-- CHROME -->
+
+    <a
+        class="download chrome"
+
+        href="https://github.com/m0hfared013-dev/Freid/releases/latest/download/Freid_PC.zip"
+    >
+
+        💻 تحميل فريد للكمبيوتر – Chrome
+
     </a>
+
+
+    <!-- KIWI -->
+
+    <a
+        class="download kiwi"
+
+        href="https://github.com/m0hfared013-dev/Freid/releases/latest/download/Freid_KIWI.zip"
+    >
+
+        📱 تحميل فريد للموبايل – Kiwi
+
+    </a>
+
 
     <div class="note">
-      <strong>ملاحظة:</strong><br>
-      بعد تحميل الملف قم بفك الضغط أولًا، ثم اتبع خطوات تثبيت أداة فريد على المتصفح.
+
+        <strong>طريقة الاستخدام:</strong>
+
+        <br><br>
+
+        🌐 <strong>Microsoft Edge:</strong>
+        اضغط زر التثبيت وسيتم فتح متجر Microsoft Edge الرسمي.
+
+        <br><br>
+
+        💻 <strong>Chrome:</strong>
+        قم بتحميل الملف وفك الضغط ثم ثبّت الإضافة يدويًا.
+
+        <br><br>
+
+        📱 <strong>Kiwi Android:</strong>
+        قم بتحميل الملف وفك الضغط ثم ثبّت أداة فريد من إضافات Kiwi.
+
     </div>
+
 
     <div class="footer">
-      أداة فريد — الإصدار الرسمي
+
+        أداة فريد — الإصدار الرسمي
+
     </div>
 
-  </div>
+</div>
 
 </body>
 </html>
