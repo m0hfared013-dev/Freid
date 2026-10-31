@@ -109,7 +109,7 @@ th{position:sticky;top:0;background:var(--surf)}tr.bad td{background:var(--warn)
 </main>
 <script>
 const $=id=>document.getElementById(id);
-let H=[],R=[],sel=new Set(),show=new Set(),logo='',cur=0;
+let H=[],R=[],sel=new Set(),show=new Set(),logo='',cur=0,bad=new Set(),_sch=null;
 const SAMPLE_H=['اسم الطالب','الصف','اسم المستخدم','كلمة المرور'];
 const SAMPLE=[['أحمد محمد علي','الأول أ','ahmed01','Ab3#92x'],['سارة خالد حسن','الأول أ','sara02','Pq7!41m'],['يوسف إبراهيم','الثاني ب','yousef03','Zk5$80d'],['مريم عادل','الثاني ب','mariam04','Lm2@66t']];
 const msg=t=>$('msg').textContent=t;
@@ -121,7 +121,7 @@ function setData(m){
   const w=Math.max(...m.map(r=>r.length));
   H=m[0].concat(Array(w-m[0].length).fill('')).map((h,i)=>h||'عمود '+(i+1));
   R=m.slice(1).map(r=>r.concat(Array(w-r.length).fill('')));
-  sel=new Set(R.map((_,i)=>i));show=new Set(H.map((_,i)=>i));
+  sel=new Set(R.map((_,i)=>i));show=new Set(H.map((_,i)=>i));bad=new Set();
   msg('تمت قراءة '+R.length+' طالب.');
   guess();drawCols();drawTable();cur=0;render();
 }
@@ -138,7 +138,7 @@ function drawCols(){
 }
 function drawTable(){
   $('tbl').innerHTML='<tr><th></th>'+H.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>'+R.map((r,i)=>
-   `<tr class="${r.some(c=>/[\uFFFD□]/.test(c))?'bad':''}"><td><input type="checkbox" data-r="${i}" ${sel.has(i)?'checked':''}></td>`+r.map((c,j)=>`<td contenteditable data-r="${i}" data-c="${j}">${esc(c)}</td>`).join('')+'</tr>').join('');
+   `<tr class="${bad.has(i)||r.some(c=>/[\uFFFD□]/.test(c))?'bad':''}"><td><input type="checkbox" data-r="${i}" ${sel.has(i)?'checked':''}></td>`+r.map((c,j)=>`<td contenteditable data-r="${i}" data-c="${j}">${esc(c)}</td>`).join('')+'</tr>').join('');
   $('tbl').querySelectorAll('input').forEach(e=>e.onchange=()=>{e.checked?sel.add(+e.dataset.r):sel.delete(+e.dataset.r);render()});
   $('tbl').querySelectorAll('td[contenteditable]').forEach(e=>e.oninput=()=>{R[+e.dataset.r][+e.dataset.c]=e.textContent;render()});
 }
@@ -157,11 +157,89 @@ async function readPdf(buf){
   const mx=Math.max(...rows.map(r=>r.length));
   return rows.filter(r=>r.length>=Math.max(2,mx-1));
 }
+const loadScript=u=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=u;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+const arRatio=s=>{const t=s.replace(/[\s\d]/g,'');return t?(t.match(/[\u0621-\u064A]/g)||[]).length/t.length:0};
+async function getOcr(){
+  if(_sch)return _sch;
+  if(!window.Tesseract)await loadScript('https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js');
+  const s=Tesseract.createScheduler();
+  for(let i=0;i<3;i++){const w=await Tesseract.createWorker('ara');await w.setParameters({tessedit_pageseg_mode:'6'});s.addWorker(w)}
+  return _sch=s;
+}
+function cropBin(c,x0,y0,x1,y1){
+  x0=Math.max(0,x0|0);y0=Math.max(0,y0|0);const w=Math.max(20,(x1-x0)|0),h=Math.max(20,(y1-y0)|0),P=20;
+  const o=document.createElement('canvas');o.width=w+2*P;o.height=h+2*P;const g=o.getContext('2d');
+  g.fillStyle='#fff';g.fillRect(0,0,o.width,o.height);g.drawImage(c,x0,y0,w,h,P,P,w,h);
+  const d=g.getImageData(0,0,o.width,o.height),a=d.data,W=o.width,T=o.height;
+  for(let i=0;i<a.length;i+=4){const v=a[i]*.3+a[i+1]*.59+a[i+2]*.11<150?0:255;a[i]=a[i+1]=a[i+2]=v}
+  for(let x=P;x<P+w;x++){let n=0;for(let y=P;y<P+h;y++)if(!a[(y*W+x)*4])n++;if(n>h*.8)for(let y=0;y<T;y++){const k=(y*W+x)*4;a[k]=a[k+1]=a[k+2]=255}}
+  for(let y=P;y<P+h;y++){let n=0;for(let x=P;x<P+w;x++)if(!a[(y*W+x)*4])n++;if(n>w*.8)for(let x=0;x<W;x++){const k=(y*W+x)*4;a[k]=a[k+1]=a[k+2]=255}}
+  g.putImageData(d,0,0);return o;
+}
+async function renderPage(P,S){
+  const v=P.pg.getViewport({scale:S}),c=document.createElement('canvas');c.width=v.width;c.height=v.height;
+  await P.pg.render({canvasContext:c.getContext('2d'),viewport:v}).promise;return c;
+}
+/* كشف منصة الحسابات: الأرقام وكلمات المرور من النص، والأسماء بالقراءة الضوئية (OCR) لأن خط الـ PDF لا يعطي حروفاً عربية صحيحة */
+async function readStatement(buf){
+  const pdf=await pdfjsLib.getDocument({data:new Uint8Array(buf.slice(0))}).promise,S=3,pages=[];
+  for(let p=1;p<=pdf.numPages;p++){
+    const pg=await pdf.getPage(p),vp=pg.getViewport({scale:1}),tc=await pg.getTextContent();
+    const its=tc.items.filter(i=>i.str.trim()).map(i=>({s:i.str.trim(),x:i.transform[4],y:i.transform[5],w:i.width}));
+    const rows=[];
+    its.filter(i=>/^\d{9}$/.test(i.s)).forEach(i=>{let r=rows.find(r=>Math.abs(r.y-i.y)<3);if(!r)rows.push(r={y:i.y,ids:[]});r.ids.push(i)});
+    const good=rows.filter(r=>r.ids.length===2).sort((a,b)=>b.y-a.y);
+    good.forEach(r=>{
+      r.ids.sort((a,b)=>b.x-a.x);r.id=r.ids[0];r.user=r.ids[1];
+      const ln=its.filter(i=>Math.abs(i.y-r.y)<4);
+      r.pw=(ln.find(i=>/^[A-Za-z0-9!?_]{8}$/.test(i.s)&&!/^\d+$/.test(i.s))||{}).s||'';
+      r.n=(ln.filter(i=>/^\d{1,4}$/.test(i.s)).sort((a,b)=>b.x-a.x)[0]||{}).s||'';
+      const nt=its.filter(i=>Math.abs(i.y-r.y)<14&&i.x<r.id.x-5&&i.x>r.user.x+r.user.w&&!/^\d+$/.test(i.s)).sort((a,b)=>b.y-a.y||b.x-a.x).map(i=>i.s).join(' ');
+      r.name=arRatio(nt)>.9?nt:'';
+    });
+    if(good.length)pages.push({pg,vp,rows:good});
+  }
+  if(!pages.length)return null;
+  const total=pages.reduce((n,P)=>n+P.rows.filter(r=>!r.name).length,0);
+  let sch=null,school='',done=0,lastCls='';const out=[],nb=new Set();
+  if(total){try{msg('جارٍ تحميل محرك قراءة الأسماء…');sch=await getOcr()}catch(e){msg('تعذّر تحميل محرك قراءة الأسماء (يحتاج اتصالاً بالإنترنت). ستظهر الأسماء فارغة لتكتبها يدوياً.')}}
+  for(const P of pages){
+    const c=await renderPage(P,S),ys=P.rows.map(r=>r.y),ds=ys.slice(1).map((y,i)=>ys[i]-y).sort((a,b)=>a-b),pitch=ds.length?ds[ds.length>>1]:27;
+    let cls=lastCls;
+    if(sch){
+      try{
+        const t=(await sch.addJob('recognize',cropBin(c,0,.13*c.height,c.width,.18*c.height))).data.text;
+        if(!school){const m=t.match(/المدرسة\s*[:：]?\s*([^\n]+)/);if(m)school=m[1].replace(/التبعية.*/,'').replace(/[|:]/g,'').trim()}
+        const k=/الثالث/.test(t)?'الصف الثالث':/الثان[يى]/.test(t)?'الصف الثاني':/الاول|الأول/.test(t)?'الصف الأول':'';
+        if(k)cls=k;
+      }catch(e){}
+    }
+    lastCls=cls;
+    await Promise.all(P.rows.map(async r=>{
+      if(r.name||!sch)return;
+      const ctr=r.y+3,cv=cropBin(c,(r.user.x+r.user.w+14)*S,(P.vp.height-(ctr+.48*pitch))*S,(r.id.x-14)*S,(P.vp.height-(ctr-.48*pitch))*S);
+      const d=(await sch.addJob('recognize',cv)).data;
+      r.name=d.text.replace(/[^\u0621-\u064A\s]/g,' ').replace(/\s+/g,' ').trim();
+      r.low=d.confidence<65||r.name.split(' ').length<2;
+      msg('جارٍ قراءة الأسماء… '+(++done)+' من '+total);
+    }));
+    P.rows.forEach(r=>{out.push([r.n,r.name,cls,r.id.s,r.user.s,r.pw]);if(r.low||!r.name)nb.add(out.length-1)});
+    c.width=c.height=0;
+  }
+  return {matrix:[['م','اسم الطالب','الصف','كود الطالب','اسم المستخدم','كلمة المرور'],...out],bad:nb,school};
+}
 async function loadFile(f){
   if(!f)return;msg('جارٍ القراءة…');
   try{
     const buf=await f.arrayBuffer();
-    if(/\.pdf$/i.test(f.name)){setData(await readPdf(buf));return}
+    if(/\.pdf$/i.test(f.name)){
+      const m=await readStatement(buf);
+      if(!m){setData(await readPdf(buf));return}
+      setData(m.matrix);bad=m.bad;
+      show=new Set(H.map((_,i)=>i).filter(i=>!/^م$|كود/.test(H[i])));
+      if(m.school)$('school').value=m.school;
+      drawCols();drawTable();render();
+      msg('تمت قراءة '+R.length+' طالب. راجع الصفوف الحمراء (أسماء غير مؤكدة) وصحّحها بالضغط على الخلية.');return}
     const wb=XLSX.read(buf,{type:'array'});
     setData(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:''}));
   }catch(e){msg('تعذّرت قراءة الملف. جرّب Excel أو CSV أو الصق الجدول.')}
