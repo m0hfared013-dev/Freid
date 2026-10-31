@@ -18,6 +18,7 @@
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--ff);line-height:1.6}
+.credit{text-align:center;background:var(--ac);color:var(--acx);font-weight:600;font-size:.92rem;padding:7px 12px}.credit.bottom{margin-top:8px}
 header{max-width:1240px;margin:auto;padding:18px 16px 4px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 header h1{margin:0;font-size:1.7rem;font-weight:700}header p{margin:0;color:var(--mut)}
 .layout{max-width:1240px;margin:auto;padding:10px 16px 24px;display:grid;gap:16px;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:start}
@@ -48,7 +49,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 /* جدول الطلاب */
 .tw{overflow:auto;max-height:420px;margin-top:10px;border:1px solid var(--bd);border-radius:10px}
 table{border-collapse:collapse;width:100%;font-size:.85rem}td,th{border-bottom:1px solid var(--bd);padding:4px 8px;white-space:nowrap;text-align:right}
-th{position:sticky;top:0;background:var(--surf);z-index:1}tr.bad td{background:var(--warn)}tr.hid{display:none}
+th{position:sticky;top:0;background:var(--surf);z-index:1}tr.bad td{background:var(--warn)}td.lk{font-family:var(--mono);color:var(--tx);text-align:left}tr.hid{display:none}
 td select{padding:2px 6px;border-radius:6px;width:auto;font-size:.82rem}
 td.g-f select{color:#b0306b}td.g-m select{color:#1d4ed8}
 /* المعاينة */
@@ -87,7 +88,7 @@ td.g-f select{color:#b0306b}td.g-m select{color:#1d4ed8}
 .pf{text-align:center;font-size:10.5px;color:#66726e;padding-top:6px}
 .gb{display:inline-block;width:7px;height:7px;border-radius:50%;margin-inline-end:4px;vertical-align:middle}
 @media print{
- body{background:#fff}header,.layout>.col>section:not(.pv),.tblsec,.nop{display:none!important}
+ body{background:#fff}.credit,header,.layout>.col>section:not(.pv),.tblsec,.nop{display:none!important}
  .layout{display:block;padding:0;max-width:none}.col,.prev{display:block;position:static}
  .pv{display:block!important;border:0;padding:0;background:none}.ph{display:none}
  #viewport{border:0;padding:0;display:block;background:none}#scaler{width:auto!important;height:auto!important;box-shadow:none;overflow:visible}
@@ -96,6 +97,7 @@ td.g-f select{color:#b0306b}td.g-m select{color:#1d4ed8}
 </style>
 </head>
 <body>
+<div class="credit">تصميم محمد فريد — مع تحيات مدرسة المعدية الثانوية المشتركة</div>
 <header><h1>بطاقات الطلاب</h1><p>ارفع كشف الحسابات، وتخرج لكل طالب بطاقة مستقلة جاهزة للقص والتسليم.</p></header>
 <div class="layout">
 <div class="col">
@@ -121,7 +123,7 @@ td.g-f select{color:#b0306b}td.g-m select{color:#1d4ed8}
 </section>
 <section><h2>تصميم البطاقة</h2>
 <div class="g2">
-<label>اسم المدرسة<input type="text" id="school" value="مدرسة النور الثانوية"></label>
+<label>اسم المدرسة<input type="text" id="school" value="" placeholder="يُكتب تلقائياً من الكشف"></label>
 <label>عنوان البطاقة<input type="text" id="title" value="بطاقة دخول منصة البرمجة والذكاء الاصطناعي"></label>
 <label style="grid-column:1/-1">رابط المنصة<input type="text" id="url" value="https://me-portal.qureo.education" dir="ltr"></label>
 <label style="grid-column:1/-1">ملاحظة أسفل البطاقة<input type="text" id="note" value="احتفظ بهذه البطاقة ولا تشاركها مع أحد."></label>
@@ -155,8 +157,9 @@ td.g-f select{color:#b0306b}td.g-m select{color:#1d4ed8}
 </div>
 <div class="layout tblsec" style="padding-top:0"><section style="grid-column:1/-1"><h2>الطلاب</h2>
 <div class="row" style="margin:0"><input type="search" id="q" placeholder="بحث بالاسم أو الرقم…" style="max-width:240px"><select id="fG" style="width:auto"><option value="">الكل</option><option value="بنين">البنين</option><option value="بنات">البنات</option></select><button id="selAll">تحديد الظاهر</button><button id="selNone">إلغاء تحديد الظاهر</button></div>
-<small style="color:var(--mut);display:block;margin-top:6px">اضغط على أي خلية لتعديلها قبل التنزيل. الصفوف المعلَّمة بالأحمر فيها حروف لم تُقرأ بشكل صحيح.</small>
+<small style="color:var(--mut);display:block;margin-top:6px">اضغط على أي خلية لتعديلها قبل التنزيل. اسم المستخدم وكلمة المرور منقولان حرفياً من الكشف ومقفلان ضد التعديل. الصفوف المعلَّمة بالأحمر تحتاج مراجعة، ومرّر المؤشر عليها لمعرفة السبب.</small>
 <div class="tw"><table id="tbl"></table></div></section></div>
+<div class="credit bottom">تصميم محمد فريد — مع تحيات مدرسة المعدية الثانوية المشتركة</div>
 <script>
 /* جداول خطوط الكشف: الحرف ← أرقامه في الخط (Segoe UI 5.62 و Arial 7.01) */
 const GLYPHS={S:{"ء":[2311],"آ":[2249,2312,3938],"أ":[2248,2313,3939],"ؤ":[2314,3620],"إ":[2250,2315,3940],"ئ":[2297,2306,2316,3621,4007],"ا":[2247,2317,3941],"الله":[2659],"ب":[2251,2318,2363,2366,3622,3623,3694,3695],"ة":[2294,2319],"ت":[2252,2320,3624,3625],"ث":[2253,2321,3626,3627],"ج":[2254,2255,2322,3628],"جل جلاله":[5105],"ح":[2256,2257,2323,3629],"خ":[2258,2259,2324,3630],"د":[2325,3631],"ذ":[2326,3632],"ر":[2327,2828,3992],"ز":[2328,2829,3993],"س":[2260,2329,3633,3634,3948,3949],"ش":[2261,2330,3635,3636,3950,3951],"ص":[2262,2331,3637,3638,3970,3971],"صلى الله عليه وسلم":[5104],"ض":[2273,2332,3639,3640,3972,3973],"ط":[2333,3641,3642,3643],"ظ":[2334,3644,3645,3646],"ع":[2274,2275,2276,2335],"غ":[2277,2278,2279,2336],"ف":[2280,2281,2338,3667],"فلله":[5271],"ق":[2283,2284,2339,3668],"ك":[2285,2340,3669,3670],"ل":[2286,2341,2367,2393,3980,3981],"لله":[2417],"م":[2287,2342,3671,3672],"محمد":[5103],"ن":[2288,2343,2399,3673,3674,3791],"ه":[2291,2344,3675,3676,3677],"و":[2345,3678],"ى":[2295,2346,3679,3680,4011],"ي":[2292,2293,2347,3681,4012]},A:{"الله":[3020,4101],"ء":[751,896],"آ":[897,898],"أ":[899,900],"ؤ":[901,902],"إ":[903,904],"ئ":[905,906,907,908],"ا":[909,910],"ب":[911,912,913,914],"ة":[915,916],"ت":[917,918,919,920],"ث":[921,922,923,924],"ج":[925,926,927,928],"ح":[929,930,931,932],"خ":[933,934,935,936],"د":[937,938],"ذ":[939,940],"ر":[941,942],"ريال":[3021],"ز":[943,944],"س":[945,946,947,948],"ش":[949,950,951,952],"ص":[953,954,955,956],"ض":[957,958,959,960],"ط":[961,962,963,964],"ظ":[965,966,967,968],"ع":[969,970,971,972],"غ":[973,974,975,976],"ف":[977,978,979,980],"فلله":[4501,4502],"ق":[981,982,983,984],"ك":[815,985,986,987,988],"ل":[989,990,991,992],"لآ":[1013,1014],"لأ":[1015,1016],"لإ":[1017,1018],"لا":[1019,1020],"لله":[895,3778],"م":[993,994,995,996,4086,4087],"محمد":[3869],"ن":[997,998,999,1000],"ه":[1001,1002,1003,1004,1567,1643,1644],"و":[1005,1006],"ى":[1007,1008,1321],"ي":[821,822,1009,1010,1011,1012]}};
@@ -164,7 +167,7 @@ const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c
 if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 const COLORS=['#0f6b5c','#1e3a6e','#8b1f3f','#a67600','#2f3b4a'];
 const GL='النوع',MALE='بنين',FEM='بنات';
-let H=[],R=[],sel=new Set(),bad=new Set(),fields=[],logo='',cur=0,color=COLORS[0],gi=-1,autoG=true;
+let H=[],R=[],sel=new Set(),bad=new Set(),why={},lock=false,fields=[],logo='',cur=0,color=COLORS[0],gi=-1,autoG=true;
 
 /* ===================== قراءة كشف منصة الحسابات (PDF) =====================
    الأسماء في الكشف مكتوبة بأرقام حروف الخط المضمّن (Segoe UI / Arial) بدون جدول تحويل،
@@ -193,37 +196,61 @@ async function pageBlocks(pg){
     const m=pickMap(b.font,b.gids);let bad=0;
     b.t=b.gids.map(g=>{if(m[g])return m[g];if(g===3||g===32)return ' ';if(g<128&&g>3)return String.fromCharCode(g+29);bad++;return '؟'}).reverse().join('').replace(/\s+/g,' ').trim();
     b.bad=bad;b.ar=1});
+  const tc=await pg.getTextContent();out.tc=tc.items.filter(i=>i.str.trim()).map(i=>({x:i.transform[4],y:i.transform[5],s:i.str.trim()}));
   return out;
 }
 const fixCls=s=>s.replace(/^الصف\s*/,'').trim().replace(/^ال[اأ]ول(ى?)$/,'الأول$1').replace(/^الثان[ىي]$/,'الثاني').replace(/^الثان[ىي]ة$/,'الثانية');
+/* قيمة الحقل المكتوبة يسار عنوانه في رأس الكشف (مثل «المدرسة:» ← اسم المدرسة) */
+function labelValue(bl,re){
+  const lab=bl.find(b=>b.ar&&re.test(b.t.replace(/\s/g,'')));if(!lab)return '';
+  const v=[];for(const b of bl.filter(b=>Math.abs(b.y-lab.y)<4&&b.x<lab.x-1).sort((a,b)=>b.x-a.x)){if(/[:：]\s*$/.test(b.t))break;if(b.t)v.push(b.t)}
+  return v.join(' ').replace(/\s+/g,' ').trim();
+}
+/* نمط كلمات مرور المنصة: 8 خانات من (2-9) والحروف الكبيرة بدون I والصغيرة بدون l و o والرموز ! ? _ */
+const PW_SAFE=/^[\x21-\x7E]{4,32}$/,PW_PLAT=/^[2-9A-HJ-Za-km-np-z!?_]{8}$/;
 async function readStatement(buf){
-  const pdf=await pdfjsLib.getDocument({data:new Uint8Array(buf.slice(0))}).promise,out=[],nb=new Set();
+  const pdf=await pdfjsLib.getDocument({data:new Uint8Array(buf.slice(0))}).promise,out=[],nb=new Set(),why={};
   let school='',cls='',stage='';
+  const flag=(i,t)=>{nb.add(i);why[i]=(why[i]?why[i]+' · ':'')+t};
   for(let p=1;p<=pdf.numPages;p++){
     msg('جارٍ قراءة الكشف… صفحة '+p+' من '+pdf.numPages);
     const bl=await pageBlocks(await pdf.getPage(p));
+    if(!school)school=labelValue(bl,/^المدرسة:?$/);
+    const c2=labelValue(bl,/^الصف:?$/);if(c2)cls='الصف '+fixCls(c2);
+    if(!stage)stage=labelValue(bl,/^المرحلة:?$/);
     bl.forEach(b=>{if(!b.ar)return;
       if(!school&&/^مدرسة\s/.test(b.t)&&b.t.length>8)school=b.t;
-      const m=b.t.match(/^الصف\s+(\S.*)$/);if(m)cls='الصف '+fixCls(m[1]);
-      if(!stage&&/^(ثانو|إعداد|اعداد|ابتدا|فن)/.test(b.t))stage=b.t});
+      if(!c2){const m=b.t.match(/^الصف\s+(\S.*)$/);if(m)cls='الصف '+fixCls(m[1])}});
     const rows=[];
     bl.filter(b=>/^\d{9}$/.test(b.t)).forEach(b=>{let r=rows.find(r=>Math.abs(r.y-b.y)<3);if(!r)rows.push(r={y:b.y,ids:[]});r.ids.push(b)});
     const good=rows.filter(r=>r.ids.length>=2).sort((a,b)=>b.y-a.y);if(!good.length)continue;
     good.forEach(r=>{r.ids.sort((a,b)=>b.x-a.x);r.id=r.ids[0].t;r.uB=r.ids[r.ids.length-1];r.parts=[];
       const ln=bl.filter(b=>!b.ar&&Math.abs(b.y-r.y)<3);
-      r.pw=(ln.find(b=>b.x<r.uB.x&&!/^\d+$/.test(b.t)&&/^\S{4,32}$/.test(b.t))||{t:''}).t;
+      /* كلمة المرور = أول خانة يسار اسم المستخدم مباشرة (حرفياً كما في الملف، بدون أي تعديل) */
+      r.pwL=ln.filter(b=>b.x<r.uB.x-1).sort((a,b)=>b.x-a.x);r.pwB=r.pwL[0];r.pw=r.pwB?r.pwB.uni:'';
       r.n=(ln.filter(b=>/^\d{1,4}$/.test(b.t)).sort((a,b)=>b.x-a.x)[0]||{t:''}).t});
     const xr=good[0].ids[0].x,xl=good[0].uB.x;
     bl.filter(b=>b.ar&&b.x>xl&&b.x<xr).forEach(b=>{let best=null;
       good.forEach(r=>{const d=r.y-b.y;if(d>-3&&d<40&&(!best||d<best.y-b.y))best=r});
       if(best)best.parts.push(b)});
     good.forEach(r=>{r.parts.sort((a,b)=>b.y-a.y||a.x-b.x);
-      const name=r.parts.map(b=>b.t).join(' ').replace(/\s+/g,' ').trim();
+      const name=r.parts.map(b=>b.t).join(' ').replace(/\s+/g,' ').trim(),i=out.length;
       out.push([r.n,name,cls,r.id,r.uB.t,r.pw]);
-      if(!name||r.parts.some(b=>b.bad))nb.add(out.length-1)});
+      if(!name)flag(i,'الاسم غير موجود');else if(r.parts.some(b=>b.bad))flag(i,'حروف في الاسم لم تُقرأ');
+      /* تدقيق كلمة المرور: قراءة ثانية مستقلة من طبقة النص + فحص الخانات */
+      if(!r.pw)flag(i,'كلمة المرور غير موجودة');
+      else{
+        const t2=(bl.tc.find(t=>Math.abs(t.y-r.y)<3&&Math.abs(t.x-r.pwB.x)<2)||{s:''}).s;
+        if(t2!==r.pw)flag(i,'قراءتا كلمة المرور غير متطابقتين ('+r.pw+' / '+t2+')');
+        if(!PW_SAFE.test(r.pw))flag(i,'كلمة المرور فيها مسافة أو حرف غير معتاد');
+        else if(!PW_PLAT.test(r.pw))flag(i,'كلمة المرور خارج نمط المنصة المعتاد، راجعها مع الكشف');
+        if(r.pwL.length>1&&r.pwL[1].x>r.pwB.x-45)flag(i,'كلمة المرور مقسومة على أكثر من جزء');
+      }
+    });
   }
   if(!out.length)return null;
-  return {matrix:[['م','اسم الطالب','الصف','كود الطالب','اسم المستخدم','كلمة المرور'],...out],bad:nb,school,stage,pages:pdf.numPages};
+  const seen={};out.forEach((r,i)=>{if(seen[r[4]]!==undefined){flag(i,'اسم المستخدم مكرر');flag(seen[r[4]],'اسم المستخدم مكرر')}else seen[r[4]]=i});
+  return {matrix:[['م','اسم الطالب','الصف','كود الطالب','اسم المستخدم','كلمة المرور'],...out],bad:nb,why,school,stage,pages:pdf.numPages};
 }
 /* PDF عادي (جدول نصي) */
 async function readPdf(buf){
@@ -261,7 +288,7 @@ function setData(m){
   const w=Math.max(...m.map(r=>r.length));
   H=m[0].concat(Array(w-m[0].length).fill('')).map((h,i)=>h||'عمود '+(i+1));
   R=m.slice(1).map(r=>r.concat(Array(w-r.length).fill('')));
-  sel=new Set(R.map((_,i)=>i));bad=new Set();
+  sel=new Set(R.map((_,i)=>i));bad=new Set();why={};lock=false;
   const o=H.map((h,i)=>`<option value="${i}">${esc(h)}</option>`).join('');
   $('nameCol').innerHTML=o;$('classCol').innerHTML='<option value="-1">— بدون —</option>'+o;
   const n=H.findIndex(h=>/اسم|name/i.test(h)&&!/مستخدم|user/i.test(h)),c=H.findIndex(h=>/^(الصف|الفصل|صف|فصل|class|grade)/i.test(h.trim()));
@@ -293,7 +320,7 @@ function drawCols(){
   $('cols').querySelectorAll('[data-dn]').forEach(e=>e.onclick=()=>mv(+e.dataset.dn,1));
 }
 function drawTable(){
-  $('tbl').innerHTML='<tr><th><input type="checkbox" id="allck" aria-label="تحديد الكل"></th>'+H.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>'+R.map((r,i)=>`<tr data-i="${i}" class="${bad.has(i)?'bad':''}"><td><input type="checkbox" data-r="${i}" ${sel.has(i)?'checked':''}></td>`+r.map((c,j)=>j===gi?`<td class="${c===FEM?'g-f':'g-m'}"><select data-g="${i}"><option ${c===MALE?'selected':''}>${MALE}</option><option ${c===FEM?'selected':''}>${FEM}</option></select></td>`:`<td contenteditable data-r="${i}" data-c="${j}">${esc(c)}</td>`).join('')+'</tr>').join('');
+  $('tbl').innerHTML='<tr><th><input type="checkbox" id="allck" aria-label="تحديد الكل"></th>'+H.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>'+R.map((r,i)=>`<tr data-i="${i}" class="${bad.has(i)?'bad':''}" ${why[i]?`title="${esc(why[i])}"`:''}><td><input type="checkbox" data-r="${i}" ${sel.has(i)?'checked':''}></td>`+r.map((c,j)=>j===gi?`<td class="${c===FEM?'g-f':'g-m'}"><select data-g="${i}"><option ${c===MALE?'selected':''}>${MALE}</option><option ${c===FEM?'selected':''}>${FEM}</option></select></td>`:(lock&&/كلمة|مستخدم|كود|pass|user/i.test(H[j])?`<td class="lk" dir="ltr" title="منقولة حرفياً من الكشف، غير قابلة للتعديل">${esc(c)}</td>`:`<td contenteditable data-r="${i}" data-c="${j}">${esc(c)}</td>`)).join('')+'</tr>').join('');
   $('tbl').querySelectorAll('input[data-r]').forEach(e=>e.onchange=()=>{e.checked?sel.add(+e.dataset.r):sel.delete(+e.dataset.r);render()});
   $('tbl').querySelectorAll('td[contenteditable]').forEach(e=>e.oninput=()=>{R[+e.dataset.r][+e.dataset.c]=e.textContent;render()});
   $('tbl').querySelectorAll('select[data-g]').forEach(e=>e.onchange=()=>{R[+e.dataset.g][gi]=e.value;e.parentNode.className=e.value===FEM?'g-f':'g-m';render()});
@@ -311,8 +338,8 @@ async function loadFile(f){
     if(/\.pdf$/i.test(f.name)){
       const m=await readStatement(buf);
       if(!m){setData(await readPdf(buf));msg('تمت قراءة '+R.length+' طالب.',1)}
-      else{setData(m.matrix);bad=m.bad;if(m.school)$('school').value=m.school;drawTable();render();
-        msg('تمت قراءة '+R.length+' طالب من '+m.pages+' صفحة'+(m.stage?' — '+m.stage:'')+'. راجع البطاقات في المعاينة ثم نزّل الملف.'+(bad.size?' يوجد '+bad.size+' صف بالأحمر يحتاج مراجعة.':' كل الأسماء قُرئت بالكامل.'),1)}
+      else{setData(m.matrix);bad=m.bad;why=m.why;lock=true;$('school').value=m.school||'';if(!m.school)$('school').focus();drawTable();render();
+        msg('تمت قراءة '+R.length+' طالب من '+m.pages+' صفحة'+(m.stage?' — '+m.stage:'')+'. راجع البطاقات في المعاينة ثم نزّل الملف.'+(bad.size?' يوجد '+bad.size+' صف بالأحمر يحتاج مراجعة (مرّر المؤشر على الصف لمعرفة السبب).':' كل الأسماء قُرئت بالكامل، وكلمات المرور مطابقة للكشف في قراءتين مستقلتين.')+(m.school?'':' لم يُعثر على اسم المدرسة في الكشف، اكتبه في «تصميم البطاقة».'),1)}
     }else{
       const wb=XLSX.read(buf,{type:'array'});if(setData(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:''})))msg('تمت قراءة '+R.length+' طالب.',1)}
     $('fname').textContent=f.name+' · '+R.length+' طالب';save();
@@ -362,7 +389,7 @@ function render(){
     if(cp.length&&(cp.length>=per||($('sep').checked&&ci>=0&&p[ci]!==r[ci])||($('sepG').checked&&$('sort').value!=='src'&&$('sort').value!=='az'&&p[g]!==r[g]))){pages.push(cp);cp=[]}
     cp.push(r)});
   if(cp.length)pages.push(cp);
-  const school=esc($('school').value),title=esc($('title').value),note=esc($('note').value);
+  const school=esc($('school').value||'اسم المدرسة'),title=esc($('title').value),note=esc($('note').value);
   $('sheet').innerHTML=pages.map((p,pi)=>{
     const cards=p.map(r=>{
       const nm=kash(r[ni]||''),sz=nsz==='auto'?(nm.length>38?' s3':nm.length>30?' s2':''):nsz==='m'?' s2':nsz==='s'?' s3':'';
@@ -390,7 +417,7 @@ document.querySelectorAll('.col input[type=text],.col select,.col input[type=che
 if(window.ResizeObserver)new ResizeObserver(fit).observe($('viewport'));addEventListener('resize',fit);
 
 /* حفظ إعدادات التصميم في المتصفح */
-const KEYS=['school','title','url','note','per','border','nsz','sort','qr','colpw','kash','pill','sep','sepG','foot','sig','qual'];
+const KEYS=['title','url','note','per','border','nsz','sort','qr','colpw','kash','pill','sep','sepG','foot','sig','qual'];
 function save(){try{const o={color};KEYS.forEach(k=>o[k]=$(k).type==='checkbox'?$(k).checked:$(k).value);localStorage.setItem('freid-cards',JSON.stringify(o))}catch(e){}}
 function load(){try{const o=JSON.parse(localStorage.getItem('freid-cards')||'null');if(!o)return;KEYS.forEach(k=>{if(k in o){if($(k).type==='checkbox')$(k).checked=o[k];else $(k).value=o[k]}});if(o.color)color=o.color}catch(e){}}
 
